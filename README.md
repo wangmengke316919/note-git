@@ -59,7 +59,7 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
 ### 3 本地创建git项目于远程项目进行关联
 
 1. 先创建一个目录demo
-2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入**git init**, 会自动在demo目录下生成**.git**目录(该目录是隐藏的).
+2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入**git init**, 会自动在demo目录下生成 **.git**目录(该目录是隐藏的).
 3. github上创建一个Repository.
 
     ![04-01](./img/04-01.jpg)
@@ -97,3 +97,34 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
         ![04-02](./img/04-02.jpg)
 
     2. 本地项目中, git命令行输入**git pull**即可更新.
+
+## 常见错误
+
+### 1 ssh: connect to host github.com port 22: Connection timed out
+
+解决方法:
+
+打开目录.ssh
+
+```git
+cd ~/.ssh
+ls
+```
+
+查看是否存在 id_rsa   id_rsa.pun  known_hosts 三个文件, 如果没有则参考ssh本地关联远程github
+
+1. vi config(进入vi编辑界面)
+2. insert模式
+
+    ```vi
+    Host github.com
+    User YourEmail@qq.com
+    Hostname ssh.github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+    port 433
+    ```
+
+其中,YourEmail为申请github账号所绑定的邮箱.
+
+保存之后再次执行"ssh -T git@github.com"时, 会出现如下提示, 一路回车"yes"即可.
