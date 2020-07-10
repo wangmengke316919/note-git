@@ -56,7 +56,7 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
         ssh -T git@github.com
         ```
 
-### 3 本地创建git项目于远程项目进行关联
+### 4 本地创建git项目于远程项目进行关联
 
 1. 先创建一个目录demo
 2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入**git init**, 会自动在demo目录下生成 **.git**目录(该目录是隐藏的).
