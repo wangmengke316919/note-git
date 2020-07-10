@@ -1,4 +1,8 @@
-# Git笔记
+# Git笔记_v1.7.3
+
+[TOC]
+
+---
 
 ## 入门
 
@@ -58,10 +62,10 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
 
 ### 4 本地创建git项目与远程项目进行关联
 
-本地创建git项目与远程项目进行关联时，要保持本地电脑PC端github账号登录状态。（一般是本地电脑，这个跟ssh配置有关。ssh配置指向其他地址，则其他地址上的github账号保持登录状态即可）
+本地创建git项目与远程项目进行关联时，要保持本地电脑PC端github账号登录状态。（一般是本地电脑，这个跟ssh配置有关。ssh配置指向其他地址，则其他地址上的github账号保持登录状态即可）[参考本地git与远程github保持登录联通](#3-本地git与远程github保持登录联通)
 
 1. 先创建一个目录demo
-2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入**git init**, 会自动在demo目录下生成 **.git**目录(该目录是隐藏的).
+2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入 `git init`, 会自动在demo目录下生成 **.git**目录(该目录是隐藏的).
 3. github上创建一个Repository.
 
     ![04-01](./img/04-01.jpg)
@@ -98,7 +102,7 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
 
         ![04-02](./img/04-02.jpg)
 
-    2. 本地项目中, git命令行输入**git pull**即可更新.
+    2. 本地项目中, git命令行输入 `git pull` 即可更新.
 
 ## 进阶
 
@@ -219,9 +223,9 @@ git reset HEAD <file>
 
 ### 11 撤销已提交文件的删除
 
-1.  对象区（分支区）- **git rm < file >** ->
-2.  暂存区 - **git reset HEAD < file >** -> (注意：这里抛出了delete信息)
-3. 工作区 **git checkout -- < file >**
+1. 对象区（分支区）- `git rm < file >` ->
+2. 暂存区 - `git reset HEAD < file >` -> (注意：这里抛出了delete信息)
+3. 工作区 - `git checkout -- < file >`
 
 ### 12 重命名文件
 
@@ -254,7 +258,7 @@ git reset HEAD <file>
 
 ![13-01](./img/13-01.jpg)
 
-修改最近一次提交的备注信息：**git commit --amend -m "备注内容"**
+修改最近一次提交的备注信息：`git commit --amend -m "备注内容"`
 
 ![13-02](./img/13-02.jpg)
 
@@ -262,7 +266,7 @@ git reset HEAD <file>
 
 git 项目中，提交前，先忽略不需要提交的文件，再把剩下的提交到对象区（分支区）。
 
-在 git 项目根目录下创建 **.gitignore** 文件，编辑内容 **vi .gitignore**
+在 git 项目根目录下创建 **.gitignore** 文件，编辑内容 `vi .gitignore`
 
 ```vi
 a.properties // 列出忽略提交的文件即可
@@ -288,6 +292,80 @@ a.properties // 列出忽略提交的文件即可
 6. dir/**/*.xxx：忽略任意级别目录中的 *.xxx文件。
 
 7. git 项目中创建的**空目录**，默认自动忽略，git status 查不到此目录信息。
+
+### 16 分支
+
+1. 查看分支：`git branch`
+
+2. 创建分支：`git branch <分支名>`
+
+3. 切换分支：`git checkout <分支名>`
+
+4. 删除分支：`git branch -d <分支名>`
+
+    1. 自己不能删除自己（当前分支），可切换主分支master，再删除当前分支。
+
+    2. 如果要被删除的分支，包含“未合并”的内容，切换到master进行删除会报错。建议先合并再通过master删除。
+
+        ![16-01](./img/16-01.jpg)
+
+5. 创建新分支并切换到该分支：`git checkout -b <分知名>`，结合 **4.** 进行操作：
+
+    ```git
+    // 场景：git项目已存在文件
+    git checkout -b new_branch
+    git rm *.xxx // 删除 *.xxx 文件
+    git commit -m "delete files: *.xxx" // 在 new_branch 分支中没有了 *.xxx文件
+    git checkout master // 分支new_branch 删除的 *.xxx 文件在主分支 master 中仍存在，此时没有受到 new_branch 操作影响，注意这里，已经切换到了 master
+    git branch -d new_branch // 报错，没删掉 new_branch 分支，并且提示 new_branch 需要合并（merge）到master，才能通过master删掉 new_branch。
+    git merge new_branch // new_branch 合并到 master，注意观察 new_branch 之前删除的 *.xxx在 master 中没有了。
+    git branch -d new_branch // 成功删除分支 new_branch
+    ```
+
+    **Tips**
+    强行删除分支：`git branch -D <分支名>`
+
+6. 查看分支最近提交（commit）的 **sha1**值：`git branch -v`
+
+    **细节问题**
+
+    1. 如果在非主分支中，file1 文件进行了写操作（即增删改），但此操作局限在工作区中进行（没有add、commit）。在 master 中能够看到该操作。
+
+    2. 如果在非主分支中，file1 文件进行了写操作（即增删改），并且add，commit。在 master 中无法观察改操作，看不到 file1 文件。（问点：非主分支主动合并 master，或主分支 master 合并非主分支，观察 file1 状态）
+
+    3. 如果在非主分支中， file1 文件进行了写操作（即增删改），但此操作局限在工作区中进行（没有add，commit）。在 master 中删除该非主分支，可直接删除。
+
+    4. 如果在非主分支中，file1 文件进行了写操作（即增删改），并且add，commit。在 master 中无法删除该非主分支。
+
+### 17 分支-提交链（分支合并与冲突）
+
+![17-01](./img/17-01.jpg)
+
+分支名（master）：指向当前的提交（commit）
+HEAD：指向当前分支（HEAD -> 分支名）
+
+![17-02](./img/17-02.jpg)
+
+```git
+// 场景：git 空项目，分支合并
+git init
+git checkout -b dev // 当前分支 dev，指向：HEAD -> dev
+cd .git
+ls // HEAD位置：.git -> HEAD
+cat HEAD // ref：refs/heads/dev
+cd ..
+cd ..
+git log // 查看 sha1 值 HEAD -> dev，master
+vi a.txt //编辑内容：a，保存，退出 vi 模式，返回 git 命令
+git add .
+git commit -m “dev1”
+git log // 观察 dev 的 sha1 值 -> dev1，此时，分支 dev 领先 master 一步
+vi a.txt // 修改内容
+git add .
+git commit -m "dev2"
+git log // 观察 dev 的 sha1 值 -> dev2，此时，分支 dev 已经领先 master 两步了
+.....未完待续
+```
 
 ## 常见错误
 
