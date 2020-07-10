@@ -219,9 +219,9 @@ git reset HEAD <file>
 
 ### 11 撤销已提交文件的删除
 
-> 对象区（分支区）- **git rm < file >** ->
-> 暂存区 - **git reset HEAD < file >** -> (注意：这里抛出了delete信息)
-> 工作区 **git checkout -- < file >**
+1.  对象区（分支区）- **git rm < file >** ->
+2.  暂存区 - **git reset HEAD < file >** -> (注意：这里抛出了delete信息)
+3. 工作区 **git checkout -- < file >**
 
 ### 12 重命名文件
 
