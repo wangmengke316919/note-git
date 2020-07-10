@@ -215,6 +215,78 @@ git reset HEAD <file>
     git commit -m "彻底删除"
     ```
 
+### 11 撤销已提交文件的删除
+
+> 对象区（分支区）- **git rm < file >** ->
+> 暂存区 - **git reset HEAD < file >** -> (注意：这里抛出了delete信息)
+> 工作区 **git checkout -- < file >**
+
+### 12 重命名文件
+
+1. git命令的文件重命名
+
+    git 文件的重命名的内部执行流程：首先新建一个文件，把源文件内容拷贝进去，然后再删掉源文件。
+
+    ```git
+    git mv <file1> <file2>
+    git status // renamed: <file1> -> <file2>
+    git reset HEAD <file1> // new file: <file2>, deleted: <file1>
+    git checkout -- <file1>
+    ls // <file1>、<file2>都在
+    git status // new file: <file2>，可提交 -> 对象区， 也可撤销 -> 工作区
+    ```
+
+2. 操作系统命令的文件重命名
+
+    ```git
+    mv <file1> <file2>
+    git status // deleted: <file1>, untracked files: <file2>
+    git add .
+    git commit -m "操作系统命令的重命名"
+    git status // 每次操作可以用此命令查看文件的状态，定位文件所在哪个区，需执行的可操作提示
+    ```
+
+### 13 注释重写提交说明
+
+**git log** // 出现冒号，按 q 退出模式
+
+![13-01](./img/13-01.jpg)
+
+修改最近一次提交的备注信息：**git commit --amend -m "备注内容"**
+
+![13-02](./img/13-02.jpg)
+
+### 14 忽略文件：.gitignore
+
+git 项目中，提交前，先忽略不需要提交的文件，再把剩下的提交到对象区（分支区）。
+
+在 git 项目根目录下创建 **.gitignore** 文件，编辑内容 **vi .gitignore**
+
+```vi
+a.properties // 列出忽略提交的文件即可
+```
+
+保存该 **.gitignore** 文件，接着，退出 vi 编辑模式，返回 git 命令行，输入 git status
+查看文件状态，该项目列表中已经没有了 a.properties 文件，它被忽略了。
+
+### 15 通配符
+
+使用场景：如 **.gitignore** 文件编写需要排除的文件。以下是常见的通配符：
+
+1. *：匹配任意字符。
+
+2. *.xxx：匹配后缀 .xxx 的文件中。
+
+3. !xx.xxx：在后缀 .xxx 的文件中，排除 xx.xxx 文件，结合 *.xxx 使用。
+
+4. dir(目录)/ ：忽略 dir 中的所有文件。
+
+5. dir(目录)/*/*.xxx：能够忽略如 dir/t1/a.xxx, dir/t2/b.xxx，但不能忽略含2级以上的目录中的 *.xxx文件（如：dir/a/b/j.xxx），这跟通配符 <*> 有关。
+
+6. dir/**/*.xxx：忽略任意级别目录中的 *.xxx文件。
+
+7. git 项目中创建的**空目录**，默认自动忽略，git status 查不到此目录信息。
+
 ## 常见错误
 
 ### 1 ssh: connect to host github.com port 22: Connection timed out
