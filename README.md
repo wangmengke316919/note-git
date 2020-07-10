@@ -1,6 +1,6 @@
-# Git笔记_v1.7.3
+# Git笔记_v1.7.6
 
-- [Git笔记_v1.7.3](#git笔记_v173)
+- [Git笔记_v1.7.6](#git笔记_v176)
   - [入门](#入门)
     - [1 安装](#1-安装)
     - [2 git status, git commit等中文信息乱码问题](#2-git-status-git-commit等中文信息乱码问题)
