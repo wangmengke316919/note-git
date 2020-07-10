@@ -30,7 +30,7 @@ git config --global svn.pathnameecoding utf-8
 
 git 的远程仓库托管网站目前就[github](https://github.com)一个常用
 
-为了在本地和远程仓库之间进行操作, 可采取免密钥登录,配置ssh. 先在本地配置, 然后把公钥发送给远程仓库github.
+为了在本地和远程仓库之间进行操作, 可采取免密钥登录,配置 .ssh 先在本地配置, 然后把公钥发送给远程仓库github.
 
 1. 在本地git命令行中输入:
 
@@ -56,7 +56,9 @@ git 的远程仓库托管网站目前就[github](https://github.com)一个常用
         ssh -T git@github.com
         ```
 
-### 4 本地创建git项目于远程项目进行关联
+### 4 本地创建git项目与远程项目进行关联
+
+本地创建git项目与远程项目进行关联时，要保持本地电脑PC端github账号登录状态。（一般是本地电脑，这个跟ssh配置有关。ssh配置指向其他地址，则其他地址上的github账号保持登录状态即可）
 
 1. 先创建一个目录demo
 2. 进入该目录,鼠标右键点击git bash..., 打开git命令端, 输入**git init**, 会自动在demo目录下生成 **.git**目录(该目录是隐藏的).
